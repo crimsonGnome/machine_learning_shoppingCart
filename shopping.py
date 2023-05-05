@@ -1,6 +1,5 @@
 import csv
 import sys
-from datetime import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 
@@ -64,6 +63,19 @@ def load_data(filename):
         evidence = []
         input_reader = csv.DictReader(input)
         page_analytics = input_reader.fieldnames
+        months = { 'Jan': 0,
+                   'Feb': 1,
+                   'Mar': 2,
+                   'Apr': 3,
+                   'May': 4,
+                   'June': 5,
+                   'Jul': 6,
+                   'Aug': 7,
+                   'Sep': 8,
+                   'Oct': 9,
+                   'Nov': 10,
+                   'Dec': 11
+        }
 
         for row in input_reader:
             newEvidence = []
@@ -78,7 +90,7 @@ def load_data(filename):
             newEvidence.append(float(row[page_analytics[7]]))
             newEvidence.append(float(row[page_analytics[8]]))
             newEvidence.append(float(row[page_analytics[9]]))
-            newEvidence.append(datetime.strptime(row[page_analytics[10]][:3], "%b").month)
+            newEvidence.append(months[row[page_analytics[10]]])
             newEvidence.append(int(row[page_analytics[11]]))
             newEvidence.append(int(row[page_analytics[12]]))
             newEvidence.append(int(row[page_analytics[13]]))
@@ -127,7 +139,7 @@ def evaluate(labels, predictions):
         elif predict == 0 and label == 0:
             neg = neg + 1
 
-    return(pos / len(labels), neg / len(labels))
+    return(pos / labels.count(1), neg / labels.count(0))
 
 
 if __name__ == "__main__":
