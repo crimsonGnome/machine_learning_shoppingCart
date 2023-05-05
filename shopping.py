@@ -58,6 +58,7 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
+    # load shopping data
     with open("shopping.csv", "r") as input:
         labels = []
         evidence = []
@@ -79,7 +80,6 @@ def load_data(filename):
 
         for row in input_reader:
             newEvidence = []
-
             newEvidence.append(int(row[page_analytics[0]]))
             newEvidence.append(float(row[page_analytics[1]]))
             newEvidence.append(int(row[page_analytics[2]]))
@@ -134,11 +134,17 @@ def evaluate(labels, predictions):
     pos = 0
 
     for label, predict in zip(labels,predictions):
+        # sensitivity represents true postive rate 
+        # if prediction and value are both true
         if predict == 1 and label == 1:
             pos = pos + 1
+        # specificity - true negative rate
+        # if prediction and value are both false
         elif predict == 0 and label == 0:
             neg = neg + 1
 
+    # return the postive predictions by the number of postives 
+    # return the negatvie predictions by the negatives 
     return(pos / labels.count(1), neg / labels.count(0))
 
 
